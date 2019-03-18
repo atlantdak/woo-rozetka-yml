@@ -1,0 +1,10 @@
+.attributes-select{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: auto;
+}
+
+.attributes-select label{
+    width: 200px;
+}
