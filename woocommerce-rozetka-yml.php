@@ -4,7 +4,7 @@ Plugin Name: Rozetka marketplace - YML creator
 Description: Plugin to create rozetka marketplace XML file to the plugin Woocommerce
 Author: Dmitriy Kishkin
 Author URI: http://www.kishkin.pro/
-Version: 1.1
+Version: 1.2
  */
 
 // Подключил для того чтобы is_plugin_active работал.
@@ -61,5 +61,4 @@ else{
 function generate_xml_file(){
     $rozetkaXMLGenerate = new rozetkaXMLGenerate();
 }
-
 ?>

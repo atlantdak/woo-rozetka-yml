@@ -1,10 +1,10 @@
 === Woo Rozetka yml creator ===
 Contributors: atlantdak (Kishkin Dmitriy)
 Donate link: #
-Tags: goods catalog, yml, yandex
+Tags: rozetka, marketplace, xml, yml
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.0
+Stable tag: 1.2
 
 Плагин автоматически создаёт файл YML(XML) для добавления сайта на WooCommerce в каталог Rozetka Marketplace.
 Имеется выбор, какие продукты добавлять, а какие не добавлять в файл выгрузки и отчёт о работе.
@@ -27,12 +27,10 @@ Stable tag: 1.0
 
 == Changelog ==
  
-= 1.0 =
+= 1.2 =
 *No changes
 
 == Upgrade Notice ==
  
-= 1.0 =
+= 1.2 =
 A working version.
-
- 

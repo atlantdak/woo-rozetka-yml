@@ -14,12 +14,46 @@ class rozetkaXMLGenerate{
         $this->save($dom);
     }
 
+    //Получаю список категорий, которые указаны на странице настройки плагина.
+    private function getProductQueryCategoriesIsSelected(){
+
+        $listOfCategories = array();
+
+        $args = array(
+            'taxonomy'   => "product_cat",
+            'orderby'    => 'name',
+            'order'      => 'ASC',
+            'hide_empty' => true,
+        );
+        //get all woocomerce category
+        $categories = get_terms($args);
+
+        foreach($categories as $category){
+            $category_name = 'rozetkaxml_cat_'.$category->slug;
+            if( get_option($category_name) == '1' ){
+                array_push($listOfCategories, $category->slug);
+            }
+        }
+
+        return $listOfCategories;
+    }
+
     private function getProductQueryArgs(){
         /* получаю данные для запроса, всех товаров или выборочных, в зависимости от опций*/
         $args = array(
             'post_type' => 'product',
             'posts_per_page' => -1
         );
+
+        $args['tax_query'] = array(
+            array(
+                'taxonomy'      => 'product_cat',
+                'field'         => 'slug', //This is optional, as it defaults to 'term_id'
+                'terms'         => $this->getProductQueryCategoriesIsSelected(),
+                'operator'      => 'IN' // Possible values are 'IN', 'NOT IN', 'AND'.
+            )
+        );
+
         /*Если в настройках отмечена галочка для добавления "только выбранных" товаров**/
         if( get_option('onlyRozetkaChecked') ){
             $args['meta_query'] = array(

@@ -32,6 +32,9 @@ class rozetkaSettings{
             if($_GET["tab"] == "cron-options"){
                 $active_tab = "cron-options";
             }
+            if($_GET["tab"] == "product_category"){
+                $active_tab = "product_category";
+            }
             if($_GET["tab"] == "product_attribute-options"){
                 $active_tab = "product_attribute-options";
             }
@@ -53,6 +56,7 @@ class rozetkaSettings{
             <a href="?page=rozetka-setting-yml-admin&tab=settings" class="nav-tab <?php if($active_tab == 'settings'){echo 'nav-tab-active';} ?>"><?php _e('Settings', 'woocommerce'); ?></a>
             <a href="?page=rozetka-setting-yml-admin&tab=product-list" class="nav-tab <?php if($active_tab == 'product-list'){echo 'nav-tab-active';} ?>"><?php _e('Product list', 'woocommerce'); ?></a>
             <a href="?page=rozetka-setting-yml-admin&tab=cron-options" class="nav-tab <?php if($active_tab == 'cron-options'){echo 'nav-tab-active';} ?> "><?php _e('Cron Options', 'woocommerce'); ?></a>
+            <a href="?page=rozetka-setting-yml-admin&tab=product_category" class="nav-tab <?php if($active_tab == 'product_category'){echo 'nav-tab-active';} ?> "><?php _e('Product category', 'woocommerce'); ?></a>
             <a href="?page=rozetka-setting-yml-admin&tab=product_attribute-options" class="nav-tab <?php if($active_tab == 'product_attribute-options'){echo 'nav-tab-active';} ?> "><?php _e('Product attribute', 'woocommerce'); ?></a>
         </h2>
         <?php
@@ -82,6 +86,10 @@ class rozetkaSettings{
             if( $active_tab == 'product-list' ){
                 echo $this->listOfProductRozetkaXML();
                 echo $this->getNotification();
+            }
+
+            if( $active_tab == 'product_category' ){
+                $this->categoryForm();
             }
 
             if( $active_tab == 'product_attribute-options' ){
@@ -159,6 +167,25 @@ class rozetkaSettings{
     ###Add field (is_rozetka_add) for settings
      *******/
 
+
+    private function categoryForm(){
+        $listOfCategories = $this->listOfCategories();
+        ?>
+        <h2>Настройка создания Goods Catalog YML </h2>
+        <form method="post" action="options.php">
+            <?php wp_nonce_field('update-options') ?>
+            <p><strong>Укажите категории, которые нужно добавлять в файл Rozekta.xml</strong></p>
+            <div class="attributes-select">
+                <?php echo $listOfCategories['form_of_categories']; ?>
+            </div>
+            <p><input type="submit" class="button-primary" name="Submit" value="Сохранить" /></p>
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="page_options" value="<?php echo $listOfCategories['list_of_categories']; ?>" />
+        </form>
+        <?php
+    }
+
+
     private function attributesForm(){
         $listOfAttributes = $this->listOfAttributes();
         ?>
@@ -217,6 +244,29 @@ class rozetkaSettings{
             echo 'Чтобы включить, нажмите галочку "Включить автоматическую генерацию" ';
         }
 
+    }
+
+    private function listOfCategories(){
+        $listOfCategories['form_of_categories'] = '';
+        $listOfCategories['list_of_categories'] = array();
+
+        $args = array(
+            'taxonomy'   => "product_cat",
+            'orderby'    => 'name',
+            'order'      => 'ASC',
+            'hide_empty' => true,
+        );
+        //get all woocomerce category
+        $categories = get_terms($args);
+        foreach($categories as $category){
+            $category_name = 'rozetkaxml_cat_'.$category->slug;
+            $listOfCategories['form_of_categories'] .= '<label for="'.$category_name.'"><input type="checkbox" id="'.$category_name.'" name="'.$category_name.'" value="1" '.checked( get_option($category_name),true , false ).'> '.$category->name.'</label>';
+            array_push($listOfCategories['list_of_categories'], $category_name) ;
+        }
+        //translate array to string format
+        $listOfCategories['list_of_categories'] = implode(",", $listOfCategories['list_of_categories']);
+
+        return $listOfCategories;
     }
 
     private function listOfAttributes(){
