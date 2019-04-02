@@ -149,6 +149,7 @@ class rozetkaXMLGenerate{
         }else{
             $description = $product_obj->get_description();
         }
+        $description = do_shortcode($description);
         return $description;
     }
 

@@ -61,4 +61,3 @@ else{
 function generate_xml_file(){
     $rozetkaXMLGenerate = new rozetkaXMLGenerate();
 }
-?>

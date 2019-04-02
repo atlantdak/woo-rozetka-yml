@@ -147,7 +147,6 @@ class rozetkaSettings{
             'id'            => 'is_rozetka_add',
             'label'         => __('Добавить в каталог Rozetka', 'woocommerce' ),
             'description'   => __( 'Добавить в файл импорта товаров для Rozetka marketplace', 'woocommerce' ),
-            //'value'         => $input_checkbox,
         ));
 
     }
